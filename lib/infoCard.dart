@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'numericOutput.dart';
 
-class EntityValue extends StatelessWidget {
+class EntityValue extends StatefulWidget {
   late int istValue;
   late int sollValue;
-  late String Entity;
-  late String Action;
+  late String entity;
+  late String action;
 
   EntityValue(
       {super.key,
@@ -16,8 +17,18 @@ class EntityValue extends StatelessWidget {
       required String aAction}) {
     istValue = iValue;
     sollValue = sValue;
-    Entity = aEntity;
-    Action = aAction;
+    entity = aEntity;
+    action = aAction;
+  }
+
+  @override
+  _EntityValue createState() => _EntityValue();
+}
+
+class _EntityValue extends State<EntityValue> {
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -65,7 +76,7 @@ class EntityValue extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "$Entity",
+                      "${widget.entity}",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
@@ -73,7 +84,7 @@ class EntityValue extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "$Action",
+                      "${widget.action}",
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
@@ -82,14 +93,14 @@ class EntityValue extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(
-                  istValue.toString() + " °C",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                  ),
-                )
+                NumericOutput(
+                    value: widget.istValue,
+                    unit: "°C",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ))
               ],
             ),
             SizedBox(width: 20),
@@ -102,7 +113,15 @@ class EntityValue extends StatelessWidget {
                 //SizedBox(height: 35),
 
                 //Spacer()
-                SollWert(value: sollValue),
+                SollWert(value: widget.sollValue),
+                NumericOutput(
+                    value: widget.sollValue,
+                    unit: "°C",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ))
               ],
             ),
           ],
@@ -111,6 +130,8 @@ class EntityValue extends StatelessWidget {
     );
   }
 }
+
+
 
 Widget getInfoCard(BuildContext context) {
   return Container(
