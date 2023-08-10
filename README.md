@@ -1,3 +1,5 @@
+This is a bried demo to find out how good things could work on a raspberry pi. 
+
 Flutter is supposed to be installed in g:\flutter
 
 # Compile package
