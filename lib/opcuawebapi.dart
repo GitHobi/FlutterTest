@@ -4,9 +4,9 @@ import 'package:web_socket_channel/io.dart';
 import 'dart:async';
 
 class OpcUaWebApi {
-  late String host = "10.43.61.156";
-  late int port = 8084;
-  late String basePath = "/api/1.0/opcua";
+  String host = "10.43.61.156";
+  int port = 8084;
+  String basePath = "/api/1.0/opcua";
 
   Map<int, Function(int, dynamic)> callbacks = {};
 
@@ -18,7 +18,7 @@ class OpcUaWebApi {
 
   void Function(int, dynamic)? dataUpdateCallback;
 
-  OpcUaWebApi(String host, int port, String basePath) {}
+  OpcUaWebApi(this.host, int port, String basePath);
 
   void _processIncomingData(String message) {
     //print ( "$message");
@@ -41,7 +41,7 @@ class OpcUaWebApi {
   }
 
   Future<void> connectWs() async {
-    const webSocketUrl = 'ws://10.43.61.156:8084/api/1.0/pushchannel';
+    var webSocketUrl = "ws://$host:$port/api/1.0/pushchannel";
     channel = IOWebSocketChannel.connect(webSocketUrl,
         headers: {'Cookie': 'ClientId=${cookie!.value}'});
 
@@ -53,7 +53,9 @@ class OpcUaWebApi {
   }
 
   Future<void> openSession() async {
-    final url = Uri.http('10.43.61.156:8084', '/api/1.0/auth');
+    print("Connecting to $host:$port/$basePath");
+
+    final url = Uri.http('$host:$port', '/api/1.0/auth');
 
     HttpClient client = HttpClient();
     HttpClientRequest clientRequest = await client.getUrl(url);
@@ -64,7 +66,7 @@ class OpcUaWebApi {
       cookie = response.cookies
           .firstWhere((element) => (element.name == "ClientId"));
 
-      final url3 = Uri.http('10.43.61.156:8084', '/api/1.0/opcua/sessions');
+      final url3 = Uri.http('$host:$port', '$basePath/sessions');
       var jsdata = {
         "url": "opc.tcp://10.43.61.156:4840",
         "userIdentityToken": {"username": "Anonymous", "password": ""},
@@ -82,7 +84,7 @@ class OpcUaWebApi {
         ping();
       });
 
-      const webSocketUrl = 'ws://10.43.61.156:8084/api/1.0/pushchannel';
+      var webSocketUrl = 'ws://$host:$port/api/1.0/pushchannel';
       channel = IOWebSocketChannel.connect(webSocketUrl,
           headers: {'Cookie': 'ClientId=${cookie!.value}'});
 

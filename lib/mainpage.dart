@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/dataReceiver.dart';
 
@@ -7,20 +6,28 @@ import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import 'dart:math';
 import 'page1.dart';
+import 'opcuawebapi.dart';
+import 'numericOutput.dart';
+import 'infoCard.dart';
 
-
-class MyHomePage extends StatefulWidget {
+class MappViewVisu extends StatefulWidget {
   final String title;
-  const MyHomePage({super.key, required this.title});
+  final OpcUaWebApi api;
+  final int subscriptionId;
+  const MappViewVisu(
+      {super.key,
+      required this.title,
+      required this.api,
+      required this.subscriptionId});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MappViewVisuState createState() => _MappViewVisuState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _MappViewVisuState extends State<MappViewVisu>
     with SingleTickerProviderStateMixin {
-  String title = "mapp View embedded";
-  DataBinding db = DataBinding();
+  String title = "";
+//  DataBinding db = DataBinding();
   late TabController _tabController;
 
   static const int numItems = 200;
@@ -40,8 +47,10 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   void initState() {
-    db.connectToData();
-    db.setCallBackSetTitle(setTitle);
+    title = widget.title;
+
+//    db.connectToData();
+//    db.setCallBackSetTitle(setTitle);
 
     _genNewData();
 
@@ -98,7 +107,29 @@ class _MyHomePageState extends State<MyHomePage>
             _tabController, // Verwenden Sie den gleichen TabController hier
         children: [
           Page1(random: random),
-          Page1(random: random),
+          //Page1(random: random),
+          Column(children: [
+            NumericOutput2(
+                api: widget.api,
+                subscriptionId: widget.subscriptionId,
+                binding: "::Program:Width",
+                unit: "°C",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                )),
+            NumericOutput2(
+                api: widget.api,
+                subscriptionId: widget.subscriptionId,
+                binding: "::Program:LocalVar3",
+                unit: "°C",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                )),
+          ]),
           //Center(child: Text('Inhalt der Einstellungen')),
           Center(
               child: ElevatedButton(
