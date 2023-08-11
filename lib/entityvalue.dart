@@ -2,21 +2,25 @@
 
 import 'package:flutter/material.dart';
 import 'numericOutput.dart';
+import 'opcuawebapi.dart';
 
 class EntityValue extends StatefulWidget {
-  late int istValue;
-  late int sollValue;
   late String entity;
   late String action;
+  final String binding_ist;
+  final String binding_soll;
+
+  final OpcUaWebApi api;
+  final int subscriptionId;
 
   EntityValue(
       {super.key,
-      required int iValue,
-      required int sValue,
       required String aEntity,
-      required String aAction}) {
-    istValue = iValue;
-    sollValue = sValue;
+      required String aAction,
+      required this.binding_ist,
+      required this.binding_soll,
+      required this.api,
+      required this.subscriptionId}) {
     entity = aEntity;
     action = aAction;
   }
@@ -54,7 +58,7 @@ class _EntityValue extends State<EntityValue> {
       margin: const EdgeInsets.all(20),
       //color: Colors.black12,
       child: Container(
-        width: 200,
+        width: 250,
         height: 100,
         margin: const EdgeInsets.all(15),
         child: Row(
@@ -93,14 +97,16 @@ class _EntityValue extends State<EntityValue> {
                     ),
                   ],
                 ),
-                NumericOutput(
-                    value: widget.istValue,
+                NumericOutput2(
+                    api: widget.api,
+                    subscriptionId: widget.subscriptionId,
+                    binding: widget.binding_ist,
                     unit: "°C",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w500,
                       color: Colors.black87,
-                    ))
+                    )),
               ],
             ),
             SizedBox(width: 20),
@@ -113,15 +119,11 @@ class _EntityValue extends State<EntityValue> {
                 //SizedBox(height: 35),
 
                 //Spacer()
-                SollWert(value: widget.sollValue),
-                NumericOutput(
-                    value: widget.sollValue,
-                    unit: "°C",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ))
+                SollWert(
+                  api: widget.api,
+                  subscriptionId: widget.subscriptionId,
+                  binding: widget.binding_soll,
+                ),
               ],
             ),
           ],
@@ -129,98 +131,6 @@ class _EntityValue extends State<EntityValue> {
       ),
     );
   }
-}
-
-
-
-Widget getInfoCard(BuildContext context) {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 2,
-          blurRadius: 5,
-          offset: Offset(2, 5), // changes position of shadow
-        ),
-      ],
-    ),
-
-    margin: const EdgeInsets.all(10),
-    //color: Colors.black12,
-    child: Container(
-      width: 200,
-      height: 100,
-      margin: const EdgeInsets.all(15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Icon(Icons.heat_pump_outlined, size: 30, color: Colors.black54)
-            ],
-          ),
-          SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Kessel",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  Text(
-                    "Heizen",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black26,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                "127 °C",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                ),
-              )
-            ],
-          ),
-          SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SollIcon(),
-              //Expanded(child: SizedBox()),
-              //SizedBox(height: 35),
-
-              //Spacer()
-              SollWert(value: 123),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
 }
 
 class SollIcon extends StatelessWidget {
@@ -239,12 +149,16 @@ class SollIcon extends StatelessWidget {
 }
 
 class SollWert extends StatelessWidget {
-  final int value;
+  final String binding;
 
-  const SollWert({
-    super.key,
-    required this.value,
-  });
+  final OpcUaWebApi api;
+  final int subscriptionId;
+
+  const SollWert(
+      {super.key,
+      required this.binding,
+      required this.api,
+      required this.subscriptionId});
 
   @override
   Widget build(BuildContext context) {
@@ -260,14 +174,16 @@ class SollWert extends StatelessWidget {
             color: Colors.black54,
           ),
         ),
-        Text(
-          value.toString() + " °C",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        )
+        NumericOutput2(
+            api: api,
+            subscriptionId: subscriptionId,
+            binding: binding,
+            unit: "°C",
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ))
       ],
     );
   }

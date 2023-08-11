@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'opcuawebapi.dart';
@@ -9,8 +10,10 @@ class NumericOutput2 extends StatefulWidget {
       required this.subscriptionId,
       required this.binding,
       required this.style,
-      required this.unit});
+      required this.unit,
+      this.id});
 
+  final int? id;
   final TextStyle style;
   final String unit;
   final OpcUaWebApi api;
@@ -25,7 +28,7 @@ class NumericOutput2 extends StatefulWidget {
 }
 
 class NumericOutputState2 extends State<NumericOutput2> {
-  int value = 0;
+  int? value = null;
   TextStyle style = TextStyle();
   String unit = "";
   bool connected = false;
@@ -39,18 +42,25 @@ class NumericOutputState2 extends State<NumericOutput2> {
     unit = widget.unit;
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> monitorData() async {
+    //if (widget.id == null) return;
     if (!connected) {
-      int handle =
-          widget.binding.length; //blödsinnig - aber wird aktuell funktionieren!
-      var monitoredItemId = await widget.api.monitorItems(
-          "ns=6;s=${widget.binding}", widget.subscriptionId, handle);
-      print("monitoredItemId = $monitoredItemId");
+      //int handle = widget.id!;
+      var result = await widget.api.monitorItems(
+          "ns=6;s=${widget.binding}", widget.subscriptionId, null);
+      var handle = result['clientHandle'];
+      //print("monitoredItemId = ${result['monitoredItemId']}");
       widget.api.callbacks[handle] = (int handle, dynamic v) => {
-            setState(() {
-              print("incoming value: $v");
-              value = v;
-            })
+            if (mounted)
+              setState(() {
+                //          print("incoming value: $handle ---> $v");
+                value = v;
+              })
           };
       connected = true;
     }
@@ -62,7 +72,8 @@ class NumericOutputState2 extends State<NumericOutput2> {
         future: monitorData(),
         builder: (context, AsyncSnapshot<void> snapshot) {
           Widget widget;
-          if (snapshot.connectionState == ConnectionState.done) {
+          //if (snapshot.connectionState == ConnectionState.done) {
+          if (value != null) {
             widget = Text(
               "${value.toString()} $unit",
               style: style,

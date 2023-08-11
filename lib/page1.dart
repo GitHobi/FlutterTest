@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'button_row.dart';
 import 'displayCard.dart';
-import 'infoCard.dart';
+import 'entityvalue.dart';
+import 'opcuawebapi.dart';
 
 class Page1 extends StatelessWidget {
   const Page1({
     super.key,
-    required this.random,
+    required this.api,
+    required this.subscriptionId,
   });
 
-  final Random random;
+  final OpcUaWebApi api;
+  final int subscriptionId;
 
   @override
   Widget build(BuildContext context) {
@@ -38,32 +41,42 @@ class Page1 extends StatelessWidget {
           child: Column(
             children: [
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program:LocalVar1",
+                binding_soll: "::Program:LocalVar2",
                 aEntity: "Kessel",
                 aAction: "heizen",
               ),
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program:LocalVar3",
+                binding_soll: "::Program:LocalVar4",
                 aEntity: "Vorlauf",
                 aAction: "kühlen",
               ),
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program:LocalVar5",
+                binding_soll: "::Program:LocalVar6",
                 aEntity: "Rücklauf",
                 aAction: "what ever",
               ),
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program:LocalVar7",
+                binding_soll: "::Program:LocalVar8",
                 aEntity: "Rücklauf",
                 aAction: "what ever",
               ),
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program:LocalVar9",
+                binding_soll: "::Program:LocalVar10",
                 aEntity: "Rücklauf",
                 aAction: "what ever",
               ),
@@ -76,32 +89,42 @@ class Page1 extends StatelessWidget {
           child: Column(
             children: [
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program1:LocalVar1",
+                binding_soll: "::Program1:LocalVar2",
                 aEntity: "Kessel",
                 aAction: "heizen",
               ),
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program1:LocalVar3",
+                binding_soll: "::Program1:LocalVar4",
                 aEntity: "Vorlauf",
                 aAction: "heizen",
               ),
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program1:LocalVar5",
+                binding_soll: "::Program1:LocalVar6",
                 aEntity: "Rücklauf",
                 aAction: "heizen",
               ),
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program1:LocalVar7",
+                binding_soll: "::Program1:LocalVar8",
                 aEntity: "Rücklauf",
                 aAction: "what ever",
               ),
               EntityValue(
-                iValue: random.nextInt(50) + 100,
-                sValue: random.nextInt(50) + 100,
+                api: api,
+                subscriptionId: subscriptionId,
+                binding_ist: "::Program1:LocalVar9",
+                binding_soll: "::Program1:LocalVar10",
                 aEntity: "Rücklauf",
                 aAction: "what ever",
               ),

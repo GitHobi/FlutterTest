@@ -8,6 +8,8 @@ class OpcUaWebApi {
   int port = 8084;
   String basePath = "/api/1.0/opcua";
 
+  int monitoredItemHandle = 0;
+
   Map<int, Function(int, dynamic)> callbacks = {};
 
   Cookie? cookie;
@@ -128,8 +130,13 @@ class OpcUaWebApi {
     return d['subscriptionId'];
   }
 
-  Future<int> monitorItems(
-      String nodeId, int subscriptionId, int clientHandle) async {
+  Future<dynamic> monitorItems(
+      String nodeId, int subscriptionId, int? clientHandle) async {
+    if (clientHandle == null) {
+      clientHandle = monitoredItemHandle;
+      monitoredItemHandle++;
+    }
+
     Uri u = _buildUri(
         "$basePath/sessions/$sessionId/subscriptions/$subscriptionId/monitoredItems");
     var jsdata = {
@@ -146,7 +153,9 @@ class OpcUaWebApi {
     var body = await _doPostReqeust(u, data);
     //print(body);
     var d = jsonDecode(body);
-    return d['monitoredItemId'];
+    var monitoredItemId = d['monitoredItemId'];
+    return jsonDecode(
+        '{"monitoredItemId": $monitoredItemId, "clientHandle": $clientHandle}');
   }
 
   Future<dynamic> readValue(String nodeId) async {

@@ -1,12 +1,5 @@
 import 'package:statsfl/statsfl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/dataReceiver.dart';
-
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-
-import 'dart:math';
-import 'page1.dart';
 
 import 'mainpage.dart';
 import 'opcuawebapi.dart';
@@ -36,7 +29,6 @@ class MyApp extends StatelessWidget {
         Widget widget;
         if (connectApi.connectionState == ConnectionState.done) {
           widget = MaterialApp(
-            title: 'Flutter Hello World 2',
             theme: ThemeData(
               primarySwatch: Colors.red,
             ),

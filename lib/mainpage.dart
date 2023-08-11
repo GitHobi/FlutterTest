@@ -8,7 +8,7 @@ import 'dart:math';
 import 'page1.dart';
 import 'opcuawebapi.dart';
 import 'numericOutput.dart';
-import 'infoCard.dart';
+import 'entityvalue.dart';
 
 class MappViewVisu extends StatefulWidget {
   final String title;
@@ -106,30 +106,15 @@ class _MappViewVisuState extends State<MappViewVisu>
         controller:
             _tabController, // Verwenden Sie den gleichen TabController hier
         children: [
-          Page1(random: random),
-          //Page1(random: random),
-          Column(children: [
-            NumericOutput2(
-                api: widget.api,
-                subscriptionId: widget.subscriptionId,
-                binding: "::Program:Width",
-                unit: "°C",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                )),
-            NumericOutput2(
-                api: widget.api,
-                subscriptionId: widget.subscriptionId,
-                binding: "::Program:LocalVar3",
-                unit: "°C",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                )),
-          ]),
+          Page1(
+            api: widget.api,
+            subscriptionId: widget.subscriptionId,
+          ),
+          Page1(
+            api: widget.api,
+            subscriptionId: widget.subscriptionId,
+          ),
+
           //Center(child: Text('Inhalt der Einstellungen')),
           Center(
               child: ElevatedButton(

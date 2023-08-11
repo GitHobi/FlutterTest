@@ -1,4 +1,19 @@
-This is a bried demo to find out how good things could work on a raspberry pi. 
+This is a brief demo to find out how good things could work on a raspberry pi. 
+
+AS Project is included ... it mainly consists of two tasks, counting up 10 values each. 
+The flutter demo is connecting to these values. 
+Attention: You need to adjust the IP of the ARsim to reflect your situation (ARsim is currently not listening on "localhost") - settings need to be adjusted in the flutter app, too. 
+
+Quick walkthough:
+
+* main.dart ... defined the main application. Also creates an instance of the OPC-UA API class. 
+* page1.dart ... first tab of the tab control - hosting the "entity values" (the cards).
+* the OPC-UA api is passed down to page1 - where EntityValues are created. 
+* In the EntityValues you have a "NumericOutput2" - which takes as parameter a (OPC-UA) API, a subscriptionId and a "Binding" (actually a nodeId).
+* The NumericOutput2 creates a monitored item and connects a callback to the API which notifes the NumericOutput2 about data changes
+* Data changes cause a change of the state. 
+
+
 
 Flutter is supposed to be installed in g:\flutter
 
